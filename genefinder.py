@@ -28,9 +28,7 @@ def plot(tortoise, index, value, window):
 		              (index - window + 1) // cols + 0.7 + value * 0.25)
 		
 def bar(tortoise, index, rf):
-	"""Draw a colored bar over codon starting at position index in
-	   reading frame rf.  Put the turtle's tail up and down to
-	   handle line breaks properly."""
+	"""Draw a colored bar over codon starting at position index in reading frame rf.  Put the turtle's tail up and down to handle line breaks properly."""
 	   
 	tortoise.up()
 	tortoise.goto(index % cols, index // cols + (rf + 1) / 5)
@@ -62,7 +60,11 @@ def gcFreq(dna, window, tortoise):
 	tortoise.up()
 	tortoise.pencolor('blue')
 	
-	# YOUR CODE GOES HERE
+	#count cg's
+    #divide by window size
+    #increment across index, if new one is cg, add to cg, if previous was cg, substract
+    
+    # YOUR CODE GOES HERE
 	
 	# get initial window count
 	
@@ -74,7 +76,7 @@ def orf1(dna, rf, tortoise):
 	inORF = False	
 	for index in range(rf, len(dna)-1, 3):
 		codon = dna[index:index+3]	
-		if codon == "ATG":
+		if codon == 'ATG':
 			inORF = True
 		elif codon == 'TAT' or codon == 'TGA' or codon == 'TAG':
 			inORF = False
@@ -129,7 +131,7 @@ def viewer(dna):
 def main():
 	# Read DNA from a file and find ORFs
 	
-	inputFile = open('eco536-10K.txt', 'r')
+	inputFile = open('eco536-1K.txt', 'r')
 	dna = inputFile.read()
 	viewer(dna)
 

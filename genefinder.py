@@ -1,3 +1,10 @@
+"""
+Author username(s): watsonjr ; johnsoam
+Date: 10/20/16
+Assignment/problem number: Homework 10
+Assignment/problem title: Genomics
+"""
+
 # Skeleton code for Project 6.2
 # Havill (2016), _Discovering Computer Science_
 
@@ -122,7 +129,7 @@ def viewer(dna):
 def main():
 	# Read DNA from a file and find ORFs
 	
-	inputFile = open('Eco536-1K.txt', 'r')
+	inputFile = open('eco536-10K.txt', 'r')
 	dna = inputFile.read()
 	viewer(dna)
 

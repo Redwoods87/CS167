@@ -1,6 +1,6 @@
 """
 Author username(s): watsonjr ; johnsoam
-Date: 10/17/16
+Date: 10/20/16
 Assignment/problem number: Homework 10
 Assignment/problem title: Above & Beyond: Microsatellites
 """

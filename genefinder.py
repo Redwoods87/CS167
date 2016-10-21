@@ -44,7 +44,15 @@ def bar(tortoise, index, rf):
 	tortoise.forward(1)
 
 def gcFreq(dna, window, tortoise):
-	"""Plot GC frequency over a sliding window."""
+	"""Plot GC frequency over a sliding window.
+
+	Parameters:
+		dna: a dna sequence as a string
+		window: size of reading window, an integer
+		tortoise: a turtle named tortoise
+
+	Returns: None
+	"""
 	
 	# draw red lines at 0.5 above the sequence
 	
@@ -59,13 +67,26 @@ def gcFreq(dna, window, tortoise):
 			tortoise.goto((len(dna) - window) % cols, index + 0.825)
 	tortoise.up()
 	tortoise.pencolor('blue')
-	
-	#count cg's
-    #divide by window size
-    #increment across index, if new one is cg, add to cg, if previous was cg, substract
     
     # YOUR CODE GOES HERE
-	
+
+	windowStart = dna[0:window+1]
+	windowCount = 0	
+	for char in windowStart:
+		if char == "C" or char == "G":
+			windowCount += 1
+	fraction = windowCount/window
+	plot (tortoise, window, fraction, window)
+
+	for i in range(len(dna)-window):
+		if dna[i] == "C" or dna[i] == "G":
+			windowCount -= 1
+		if dna[i+window] == "C" or dna[i+window] == "G":
+			windowCount += 1
+		fraction = windowCount/window
+		plot (tortoise, window+i, fraction, window)
+			
+		
 	# get initial window count
 	
 	# get subsequent window counts and plot them
@@ -73,6 +94,19 @@ def gcFreq(dna, window, tortoise):
 	# call plot(tortoise, index, fraction, window)
 		
 def orf1(dna, rf, tortoise):
+	"""Displays open reading frames (ORF's) by calling the bar function to draw blue bars for ORF's and red bars for non-ORF's.
+	
+	Parameters:
+		dna: a dna sequence as a string
+		rf: the starting nucleotide of the first ORF (an integer between 0 and 2)
+		tortoise: a turtle named tortoise
+
+	Returns: None
+
+	"""    
+
+	# YOUR CODE GOES HERE	
+
 	inORF = False	
 	for index in range(rf, len(dna)-1, 3):
 		codon = dna[index:index+3]	
@@ -88,7 +122,6 @@ def orf1(dna, rf, tortoise):
 			tortoise.pencolor('red')
 			bar(tortoise, index, rf)    
 
-	# YOUR CODE GOES HERE
 	
 	# to place a bar in the current color over the codon starting at 
 	# position index in reading frame rf, call
@@ -131,7 +164,7 @@ def viewer(dna):
 def main():
 	# Read DNA from a file and find ORFs
 	
-	inputFile = open('eco536-1K.txt', 'r')
+	inputFile = open('eco536-1k.txt', 'r')	# change text file for different DNA sequences
 	dna = inputFile.read()
 	viewer(dna)
 

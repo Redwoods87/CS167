@@ -1,7 +1,8 @@
 # remove spaces and hyphens from card numbers
 # add assertions to enforce preconditions
 # write our names
-# 
+# I think we could have left it as a list?
+# Main needs a full doc string
 
 
 
@@ -21,7 +22,8 @@ def isAmEx(cardNum):
 		False if it is not.		
 	"""
 	return (cardNum[0:2] == [3,4] or cardNum[0:2] == [3,7]) and len(cardNum) == 15
-		
+	
+    
 def isDiscover(cardNum):
 	"""Checks to see if the card number is a valid Discover card number.
 
@@ -38,7 +40,6 @@ def isDiscover(cardNum):
 	"""
 	return (cardNum[0:4] == [6,0,1,1] or cardNum[0:3] == [6,4,4] or cardNum[0:2] == [6,5]) \
 and len(cardNum) == 16
-
 
 
 def isMasterCard(cardNum):
@@ -74,6 +75,7 @@ def isVisa(cardNum):
 	"""
 	return cardNum[0] == 4 and (len(cardNum) == 13 or len(cardNum) == 16)
 
+
 def stringToList(string):
 	"""Turns a given string of numbers into a list where each item in the list represents each number in the string.
 	
@@ -92,6 +94,7 @@ def stringToList(string):
 		stringList.append(int(character))
 	return stringList
 
+
 def is_type_accepted(card_number):
 	"""Checks if the given card is of an accepted type.
 
@@ -103,6 +106,7 @@ def is_type_accepted(card_number):
 	"""
 	cardList = stringToList(card_number)
 	return (isAmEx(cardList) or isDiscover(cardList) or isMasterCard(cardList) or isVisa(cardList))
+
 
 def is_checksum_valid(card_number):
 	"""Checks if a credit card number is valid.
@@ -122,13 +126,15 @@ def is_checksum_valid(card_number):
 		if temp >= 10:
 			temp -= 9 #Subtracting 9 from a 2-digit integer less than 20 is the same as adding the digits
 		checkSum += temp
-	return checkSum % 10 == 0
+	return checkSum % 10 == 0 #True if it ends in 0
+
 
 def invalidCard():
 	"""Prints a message for when your card is invalid.	
 	"""
 	print("We're sorry, the card number you have entered is invalid.")
 
+    
 def cardTypeTest(card_number):
 	"""Returns the name of the credit card brand of the given number.
 	
@@ -154,6 +160,7 @@ def cardTypeTest(card_number):
 	else:
 		return " [[[ ERROR: This message should not display. If it does, contact programmer. ]]] "
 
+    
 def main():
 	"""Asks the user for a credit card number. Reports whether the number is accepted and valid.
 	"""

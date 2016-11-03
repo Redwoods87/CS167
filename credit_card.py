@@ -5,8 +5,9 @@ Assignment/problem number: Homework 12
 Assignment/problem title: Checking Credit Cards
 """
 
-# stringToList now remove spaces and non-number characters from the list
-# all necessary assertions added
+# stringToList removes spaces and non-number characters from the list
+# is<Card> functions check for appropriate number length as well as prefix
+# cardTypeTest function reports card type for final output
 
 def isAmEx(cardNum):
 	"""Checks to see if the card number is a valid American Express card number.
@@ -109,7 +110,7 @@ def is_type_accepted(card_number):
 
 	Returns:
 		True if the number is an American Express, Discover, MasterCard, or Visa number;
-				  False otherwise.
+		False otherwise.
 	"""
 	assert isinstance(card_number, str)	
 	cardList = stringToList(card_number)
@@ -123,7 +124,7 @@ def is_checksum_valid(card_number):
 
 	Returns:
 		True if the number passes the Luhn checksum algorithm;
-				  False if it does not.
+		False if it does not.
 	"""
 	assert isinstance(card_number, str)	
 	checkSum = 0
@@ -152,7 +153,7 @@ def cardTypeTest(card_number):
 	
 	Preconditions: card_number is a valid credit card number of one of the given brands
 
-	Postconditions: Returns a string based the kind of card the number represents.
+	Postconditions: Returns a string describing the kind of card the number represents.
 	
 	Returns:
 		The brand name of the credit card as a string.

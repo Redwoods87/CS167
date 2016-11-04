@@ -1,6 +1,6 @@
 """
 Author username(s): pylescj ; johnsoam
-Date: 11/2/16
+Date: 11/3/16
 Assignment/problem number: Homework 12
 Assignment/problem title: Checking Credit Cards
 """
@@ -8,6 +8,7 @@ Assignment/problem title: Checking Credit Cards
 # stringToList removes spaces and non-number characters from the list
 # is<Card> functions check for appropriate number length as well as prefix
 # cardTypeTest function reports card type for final output
+# is_type_accepted and is_checksum_valid both return False for empty inputs
 
 def isAmEx(cardNum):
 	"""Checks to see if the card number is a valid American Express card number.
@@ -15,9 +16,9 @@ def isAmEx(cardNum):
 	Parameters:
 		cardNum: A list with each item in the list representing one integer in the card number.
 	
-	Preconditions: cardNum is a valid list
+	Preconditions: cardNum is a valid list of at least 1 item
 
-	Postconditions: Returns a boolean True/False value.
+	Postconditions: Returns a boolean True/False value
 		
 	Returns:
 		True if the card is a valid American Express card
@@ -33,9 +34,9 @@ def isDiscover(cardNum):
 	Parameters:
 		cardNum: A list with each item in the list representing one integer in the card number.
 	
-	Preconditions: cardNum is a valid list
+	Preconditions: cardNum is a valid list of at least 1 item
 
-	Postconditions: Returns a boolean True/False value.
+	Postconditions: Returns a boolean True/False value
 		
 	Returns:
 		True if the card is a valid Discover card
@@ -52,9 +53,9 @@ def isMasterCard(cardNum):
 	Parameters:
 		cardNum: A list with each item in the list representing one integer in the card number.
 	
-	Preconditions: cardNum is a valid list
+	Preconditions: cardNum is a valid list of at least 1 item
 
-	Postconditions: Returns a boolean True/False value.
+	Postconditions: Returns a boolean True/False value
 		
 	Returns:
 		True if the card is a valid MasterCard card
@@ -70,9 +71,9 @@ def isVisa(cardNum):
 	Parameters:
 		cardNum: A list with each item in the list representing one integer in the card number.
 	
-	Preconditions: cardNum is a valid list
+	Preconditions: cardNum is a valid list of at least 1 item
 
-	Postconditions: Returns a boolean True/False value.
+	Postconditions: Returns a boolean True/False value
 		
 	Returns:
 		True if the card is a valid Visa card
@@ -114,13 +115,15 @@ def is_type_accepted(card_number):
 	"""
 	assert isinstance(card_number, str)	
 	cardList = stringToList(card_number)
+	if cardList == []:		#If empty string, append -1 or validity checks break
+		cardList.append(-1)
 	return (isAmEx(cardList) or isDiscover(cardList) or isMasterCard(cardList) or isVisa(cardList))
 
 
 def is_checksum_valid(card_number):
 	"""Checks if a credit card number is valid.
 
-	Parameter: A string representing an integer.
+	Parameter: A string representing an integer card number.
 
 	Returns:
 		True if the number passes the Luhn checksum algorithm;
@@ -129,6 +132,8 @@ def is_checksum_valid(card_number):
 	assert isinstance(card_number, str)	
 	checkSum = 0
 	cardList = stringToList(card_number)
+	if cardList == []:		#If empty string, append -1 to output False
+		cardList.append(-1)
 	for i in range(-1,-len(cardList)-1,-2): #Sum of integers on odd, negative indices		
 		checkSum += cardList[i]
 	for i in range(-2,-len(cardList)-1,-2): #Sum of doubled integers on even, negative indices		
@@ -174,7 +179,7 @@ def cardTypeTest(card_number):
 
     
 def main():
-	"""Asks the user for a credit card number. Reports whether the number is accepted and valid.
+	"""Asks the user for a credit card number. Reports whether the number is accepted and valid and what type of credit card it is.
 	
 	Returns: None, called for side effects. 	
 	"""

@@ -1,6 +1,6 @@
 """
 Author username(s): pylescj ; johnsoam
-Date: 11/2/16
+Date: 11/3/16
 Assignment/problem number: Homework 12
 Assignment/problem title: Checking Credit Cards
 """
@@ -24,7 +24,6 @@ LongVisa = [4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 # def isAssertionError(singleInput): #Unused
 	# pass
-
 
 def test():
 	#Common Case
@@ -61,7 +60,10 @@ def test():
 	assert stringToList("4321432143214321") == [4,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1]
 	assert stringToList("1apple23") == [1,2,3]
 	assert cardTypeTest("4111111111119") == "Visa"
-
+	assert is_type_accepted("4111111111119") == True
+	assert is_type_accepted("6011111111111117") == True
+	assert is_type_accepted("378282246310005") == True
+    
 	#Boundary Case 
 	assert isAmEx(Visa1) == False
 	assert isVisa(MasterCard1) == False
@@ -69,6 +71,10 @@ def test():
 	assert isMasterCard(Discover1) == False
 	assert stringToList("apple") == []
 	assert stringToList("411-111-111") == [4, 1, 1, 1, 1, 1, 1, 1, 1]
+	assert is_type_accepted("0000000000000000") == False
+	assert is_type_accepted("1111111111111111") == False
+	assert is_type_accepted("1111111111111111") == False
+	assert is_type_accepted("4111 1111 1111 1111") == True
 
 	#Corner Case
 	assert isAmEx(LongAmEx) == False
@@ -78,15 +84,18 @@ def test():
 	assert isMasterCard(LongMaster) == False
 	assert isMasterCard(FakeCard) == False
 	assert isVisa(LongVisa) == False
+	assert isVisa([-1]) == False	
 	assert isVisa(FakeCard) == False
 	assert stringToList("I went to the store") == []
 	assert stringToList("1   3   apple, ! door floor bored") == [1, 3]
-
-
+	assert is_type_accepted("apple42") == False
+	assert is_type_accepted("00 oops!! 00 jkjk") == False
+	assert is_type_accepted("") == False
+	assert is_checksum_valid("-1") == False
+	assert is_checksum_valid("") == False	
+	assert is_checksum_valid("Coding is cool.") == False
 
 	print("Passed all tests!")
 
 test()
-
-# is_checksum_valid("371449635398431")
 

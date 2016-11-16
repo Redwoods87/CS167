@@ -1,0 +1,72 @@
+import turtle
+import random
+
+def randAngle():
+    return random.randrange(10, 60)
+
+def randLength(minLength, maxLength):
+    return random.randrange(minLength, maxLength)    
+
+def tree(tortoise, length, depth):
+    """Recursively draw a tree.
+
+    Parameters:
+        tortoise, a Turtle object
+        length, the length of the trunk
+        depth, the desired depth of recursion
+
+    Return value: None
+    """
+    length = randLength(length//1, (length//1)*2)
+    if depth <= 1:                  # the base case
+        tortoise.forward(length)
+        tortoise.backward(length)
+    else:                           # the recursive case
+        tortoise.forward(length)
+        angle = randAngle()
+        tortoise.left(angle)
+        tree(tortoise, length * (2/3), depth - 1)
+        tortoise.right(angle*2)
+        tree(tortoise, length * (2/3), depth - 1)
+        tortoise.left(angle)
+        tortoise.backward(length)
+
+def tree_main():
+    george = turtle.Turtle()
+    george.speed(0)
+    george.left(90)
+    tree(george, 100, 5)
+    screen = george.getscreen()
+    screen.exitonclick()
+
+
+def koch(tortoise, length, depth):
+    """Recursively draw a Koch curve.
+
+    Parameters:
+        tortoise, a Turtle object
+        length, the length of a line segment
+        depth, the desired depth of recursion
+
+    Return value: None
+    """
+    if depth == 0:                      # base case
+        tortoise.forward(length)
+    else:                               # recursive case
+        koch(tortoise, length / 3, depth - 1)
+        tortoise.left(60)
+        koch(tortoise, length / 3, depth - 1)
+        tortoise.right(120)
+        koch(tortoise, length / 3, depth - 1)
+        tortoise.left(60)
+        koch(tortoise, length / 3, depth - 1)
+
+def koch_main():
+    george = turtle.Turtle()
+    koch(george, 400, 3)
+    screen = george.getscreen()
+    screen.exitonclick()
+
+if __name__=='__main__':
+    tree_main()
+    #koch_main()

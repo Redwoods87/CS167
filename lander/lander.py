@@ -1,10 +1,14 @@
-'''
-lander.py
+"""
+Author username(s): johnsoam
+Date: 11/17/16
+Assignment/problem number: Homework 15
+Assignment/problem title: Lunar Lander
+"""
 
+'''
 This is a program that allows you to play the lunar lander game.
 
-You should be able to play the text version with the files that you 
-download.
+Adapted from Andy Exley.
 
 '''
 

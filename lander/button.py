@@ -16,7 +16,8 @@ class Button(object):
         self.lowerright = Point(location.getX() + width,
                                 location.getY() + height)
         self.rect = Rectangle(self.upperleft, self.lowerright)
-        self.text = Text(text)
+        self.center = self.rect.getCenter()
+        self.text = Text(self.center, text)
 
     def draw(self, window): 
         """Draw the button in the given window

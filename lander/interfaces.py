@@ -17,7 +17,7 @@ by Andy Exley
 
 """
 Note: I included the Button class in this file.
-I modified the Button class from the one used in class as it was incomplete.
+I modified the Button class from the one used in class which was incomplete.
 """
 
 import sys
@@ -103,7 +103,7 @@ class GraphicLanderInterface:
         self.statusText = None
 
         #self.statusText = graphics.Text(graphics.Point (150, 570), "Status:" )
-        #self.statusText.draw(self.win)    # This object is in show_info method
+        #self.statusText.draw(self.win)    # This object is now in show_info method
 
         self.thrustButton = Button(graphics.Point(110, 450), 80, 50, "Thrust!")
         self.thrustButton.draw(self.win)

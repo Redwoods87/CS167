@@ -1,6 +1,6 @@
 """
 Author username(s): johnsoam
-Date: 11/28/16
+Date: 11/29/16
 Assignment/problem number: Homework 16
 Assignment/problem title: Recursion
 """
@@ -18,14 +18,12 @@ def stringToLetters(string):
     newString = ""
     for i in range (len(string)):
         char = string[i]
-        # print(ord(string[i]))
-        if 97 <= ord(char) and ord(char) <= 122:
+        if 97 <= ord(char) and ord(char) <= 122:    # if lowercase add to newString
             newString = newString + char
-        elif 65 <= ord(char) and ord(char) <= 90:
-            lowerChar = chr(ord(char) + 32)
-            # print(lowerChar)
+        elif 65 <= ord(char) and ord(char) <= 90:   # if uppercase make lowercase
+            lowerChar = chr(ord(char) + 32)         
             newString = newString + lowerChar
-    return newString
+    return newString                                # and if other char, disregard
         
 def palindrome(a_string):
     """
@@ -43,22 +41,26 @@ def palindrome(a_string):
 
 def licensePlates(length, letters, numbers):
     """
-    Generates a list of all possible license plates within certain parameters.
+    Generates a list of all possible license plates beginning with a series of letters followed by an equal number of numbers.
     
     Parameters:
-        length: 
+        length: the number of letters and the number of numbers in each plate, an integer
+        letters: the possible letters as a string
+        numbers: the possible numbers as a string
     
+    Returns a list containing all possible license plates as individual strings.
     """  
-    
     if length == 0:
         return [""]
     
     shorter = licensePlates(length - 1, letters, numbers)
     
     platesList = []
-    for letter in letters:
-        for shorterPlate in shorter:
-            platesList.append(letter + shorterPlate + number)
+    for shorterPlate in shorter:
+        for letter in letters:
+            for number in numbers:
+                platesList.append(letter + shorterPlate + number)
+    return platesList
 
 def test():
     """
@@ -85,23 +87,7 @@ def test():
 
 def main():
     test()
+    print (licensePlates(2, "XY", "12"))
         
 if __name__ == "__main__":
     main()
-
-
-    
-""" TRYING RECURSION
-    if len(string) <= 0:
-        newString = ""
-        return newString
-    char = string[0]
-    newString = ""
-    if 97 <= ord(char) <= 122:
-        newString += char
-    elif 65 <= ord(char) <= 90:
-        lowerChar = chr(ord(char) + 26)
-        newString += lowerChar
-    newString += stringToLetters(string[1:])
-
-"""

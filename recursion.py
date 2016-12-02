@@ -5,26 +5,7 @@ Assignment/problem number: Homework 16
 Assignment/problem title: Recursion
 """
 
-def stringToLetters(string):
-    """
-    Creates a new string with only the letters and converting all letters to lower-case.
     
-    Parameters:
-        string: a string to convert
-    
-    Returns a new string with only lower case letters and no spaces.
-    """
-    
-    newString = ""
-    for i in range (len(string)):
-        char = string[i]
-        if 97 <= ord(char) and ord(char) <= 122:    # if lowercase add to newString
-            newString = newString + char
-        elif 65 <= ord(char) and ord(char) <= 90:   # if uppercase make lowercase
-            lowerChar = chr(ord(char) + 32)         
-            newString = newString + lowerChar
-    return newString                                # and if other char, disregard
-        
 def palindrome(a_string):
     """
     Determines if a string is a palindrome.  (Adapted from Jessen Havill's "Discovering Computer Science" pg. 493.) Excludes non-letter characters and spaces.
@@ -34,10 +15,33 @@ def palindrome(a_string):
     
     Returns: Boolean True or False, will evaluate only the characters that are letters in the string.
     """
-    modString = stringToLetters(a_string)    
-    if len(modString) <= 1:
+     
+    if len(a_string) <= 1:
         return True
-    return modString[0] == modString[-1] and palindrome (modString[1:-1])
+    
+    frontIndex = 0
+    backIndex = -1
+    
+        
+    while not ord("a") <= ord(a_string[frontIndex]) <= ord("z") and not ord("A") <= ord(a_string[frontIndex]) <= ord("Z"):
+        frontIndex += 1         #if not a letter, skip index
+     
+    while not ord("a") <= ord(a_string[backIndex]) <= ord("z") and not ord("A") <= ord(a_string[backIndex]) <= ord("Z"):
+        backIndex -= 1          #if not a letter, skip index
+
+            
+    frontChar = a_string[frontIndex]
+    backChar = a_string[backIndex]
+
+    ordDifference = ord("a") - ord("A")     #for making chars all lowercase
+
+    if ord("A") <= ord(frontChar) <= ord("Z"):      #if front upper, maker lower
+        frontChar = chr(ord(frontChar) + ordDifference)
+        
+    if ord("A") <= ord(backChar) <= ord("Z"):       #if back upper, make lower
+        backChar = chr(ord(backChar) + ordDifference)    
+    
+    return frontChar == backChar and palindrome(a_string[frontIndex+1:backIndex])
 
 def licensePlates(length, letters, numbers):
     """
@@ -91,3 +95,29 @@ def main():
         
 if __name__ == "__main__":
     main()
+    
+    
+    
+    
+"""
+Unused code from first turn-in:
+
+def stringToLetters(string):
+    Creates a new string with only the letters and converting all letters to lower-case.
+    
+    Parameters:
+        string: a string to convert
+    
+    Returns a new string with only lower case letters and no spaces.
+    
+    newString = ""
+    for i in range (len(string)):
+        char = string[i]
+        if 97 <= ord(char) and ord(char) <= 122:    # if lowercase add to newString
+            newString = newString + char
+        elif 65 <= ord(char) and ord(char) <= 90:   # if uppercase make lowercase
+            lowerChar = chr(ord(char) + 32)         
+            newString = newString + lowerChar
+    return newString                                # and if other char, disregard
+
+"""

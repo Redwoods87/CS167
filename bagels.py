@@ -76,11 +76,10 @@ class BagelsGame:
         self.currentGuess = ""
         self.guesses = [] # items: strings of 3 digits ea.
         
-        self.picos = {} # key: 3-digit guess,
-                        # value: number of picos in guess    
+        self.picosList = [] # list of single digits in guesses with picos   
         self.fermis = {} # key: 3-digit guess,
                          # value: number of fermis in guess  
-        self.bagels = "" # string of single digits not in hiddenNum
+        self.availableDigits = "0123456789" # string digits not eliminated by "bagels"
         
         self.totalPlayerScore = 0
         self.totalCompScore = 0
@@ -98,9 +97,9 @@ class BagelsGame:
         self.points = 10
         self.currentGuess = ""
         self.guesses[:] = []
-        self.picos.clear()  # dict clear() function found via StackOverflow
+        self.picosList[:] = []
         self.fermis.clear()
-        self.bagels = ""
+        self.availableDigits = "0123456789"
     
     def getHiddenNum(self):
         """
@@ -130,7 +129,7 @@ class BagelsGame:
         """
         finished = False    
         while finished == False:    #Repeats if input invalid
-            inputString = input("Please pick a 3-digit number: ") # text generated from Story class?
+            inputString = input("Pick a 3-digit number for your opponent to guess: ") # text generated from Story class?
             if self.validInput(inputString) == True:
                 self.hiddenNum = inputString
                 finished = True
@@ -158,11 +157,10 @@ class BagelsGame:
         for i in range (len(self.currentGuess)):    # iterates over 3 digits in guess
             if self.currentGuess[i] in self.hiddenNum and self.currentGuess[i] != self.hiddenNum[i]: # pico
                 response.append("pico ")
-                if self.currentGuess in self.picos:         # add guess:num of picos to picos dict
-                    self.picos[self.currentGuess] += 1      # if first digit, create item
-                else:                       
-                    self.picos[self.currentGuess] = 1       # add to already-created item
-                                                            # BUG: IF PLAYER GUESSES SAME GUESS REPEATEDLY, THESE COUNTS WILL GROW
+                for i in range(len(self.currentGuess)):
+                    if self.currentGuess[i] not in self.picoDigits:
+                        self.picoDigits.append(self.currentGuess[i])
+
             if self.currentGuess[i] == self.hiddenNum[i]:   # fermi
                 response.append("fermi ")
                 if self.currentGuess in self.fermis:
@@ -174,7 +172,10 @@ class BagelsGame:
         
         if wrongDigits >= 3:
             response.append("Bagels! ")
-            self.bagels += self.currentGuess         
+            for i in range (len(self.currentGuess)):
+                if self.currentGuess[i] in self.availableDigits:
+                    self.availableDigits.replace(self.currentGuess[i], "")
+            self.avi += self.currentGuess         
         
         random.shuffle(response)    # randomizes order of responses
         lineToPrint = ""            
@@ -243,10 +244,17 @@ class BagelsGame:
         while len(responseList) >= 1:   # if no more responses found, len set to 0
             if "pico" in responseList:
                 confirmResponse += "Pico "
+                for i in range(len(self.currentGuess)):
+                    if self.currentGuess[i] not in self.picosList:
+                        self.picosList.append(self.currentGuess[i])
+                    
+                """
                 if self.currentGuess in self.picos:
                     self.picos[self.currentGuess] += 1 
                 else:
                     self.picos[self.currentGuess] = 1
+                """
+                
                 responseList.remove("pico")
 
             elif "fermi" in responseList:
@@ -259,8 +267,10 @@ class BagelsGame:
 
             elif "bagels" in response:
                 confirmResponse += "Bagels! "
-                self.bagels += self.currentGuess
-                response.remove("bagels") 
+                for i in range(len(self.currentGuess)):
+                    if self.currentGuess[i] in self.availableDigits:
+                        self.availableDigits.replace(self.currentGuess[i], "")
+                responseList.remove("bagels") 
 
             else:
                 del responseList[:] # list len set to 0
@@ -277,7 +287,35 @@ class BagelsGame:
     def compGuess(self):
         """
         AI uses variables to make an educated guess
+        Returns guess as a 3-character string
+        BUG: COMP IS GENERATING 0's AS FIRST DIGIT
         """
+        nextGuess = ["x", "x", "x"]     # will be used to generate next guess
+        openIndices = [0, 1, 2]
+
+        
+        if len(self.fermis) > 0:
+            for i in range(self.fermis[self.currentGuess]): # first use fermis, repeat for fermi in guess
+                pickedIndex = random.choice(openIndices)    # pick random index to keep fermi
+                openIndices.remove(pickedIndex)             # remove the index remaining unchanged
+                nextGuess[pickedIndex] = self.currentGuess[pickedIndex]
+
+        
+        tempPicosList = self.picosList  # then address picos, tempList so we can modify locally
+        for i in range (len(openIndices)):   # use the remaining indices of nextGuess
+
+            while nextGuess[openIndices[i]] == "x": #and first digit not 0 and no repeats?
+                if len(tempPicosList) > 0:
+                    guessedDigit = random.choice(tempPicosList)
+                    tempPicosList.remove(guessedDigit)
+
+                else:
+                    guessedDigit = random.choice(self.availableDigits)
+            
+                nextGuess[openIndices[i]] = guessedDigit
+        
+
+        return "".join(nextGuess)
     
     def compTurn(self):
         """
@@ -288,25 +326,25 @@ class BagelsGame:
         self.playerSetNum()
         while self.currentGuess != self.hiddenNum and self.points >= 1: # repeat guessing
             print("Your opponent has " + str(self.points) + " points left.")
-            
             if self.currentGuess == "":
                 self.currentGuess = self.randGuess()
-            #INSERT INTENTIONAL GUESS
+            
+            else:
+                self.currentGuess = self.compGuess()
             
             print("Your opponent guesses " + self.currentGuess)
         
             if self.currentGuess == self.hiddenNum:
-                print ("You got it! Relish your victory.")
+                print ("Your opponent guessed correctly.")
                 self.totalPlayerScore += self.points
 
             elif self.points <= 0:
-                print("You have been defeated.")
+                print("Your opponent has failed.")
                 # self.continueOrQuit() # prompts to replay or quit
         
             else:
                 self.points -= 1
-        
-            self.playerResponse()    
+                self.playerResponse()    
             
     
     def continueOrQuit(self):

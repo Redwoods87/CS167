@@ -24,14 +24,34 @@ def intro():
     """
     Prints intro to game, prompts to choose side
     """
-    pass
+    print("Welcome to Bagels the Game! \n")
     
 def rules():
     """
     Prints rules
     """
-    print("THESE ARE THE RULES!")
-    
+    print("How to play Bagels (couresy of armoredpenguin.com): \n \
+1. There are two opponents. One picks a number, and the other one \
+attempts to guess the number. The person picking the number must \
+give accurate answers to the guesses. \n\n \
+2. The person picking a number picks a three digit number. In this \
+version, there may be no leading zeros, and digits may not be repeated.\n\n \
+3. The person guessing the number gives three digit numbers. \n\n \
+4. The person who picked the number answers: \n\n \
+- Fermi : One of the digits in the guess matches one of the digits in the \
+answer, and it is in the right position. \n\n \
+- Pico : One of the digits in the guess matches one of the digits in the answer, \
+and it is in the right position. \n\n \
+- Bagels : None of the digits in the guess match any of the digits in the answer. \n\n \
+Multiple answers may come out of a single guess. For example, the person answering \
+might say, 'Pico Pico,' 'Pico Pico Pico,' or 'Fermi Fermi Pico,' in no particular \
+order. \n\n \
+
+
+
+")
+        
+
 #def help():    #BUILT INTO checkOptions() and rules()
  #   """
 #    Prints rules and options to exit or continue
@@ -80,8 +100,8 @@ class BagelsGame:
         self.fermis = {} # key: 3-digit guess,
                          # value: number of fermis in guess  
         self.availableDigits = "0123456789" # string digits not eliminated by "bagels"
-        
-        self.totalPlayerScore = 0
+        self.compTurnCount = 9 - level # turns until comp guesses correctly
+        self.totalPlayerScore = 0          # level 1 gets 8 turns, 2 gets 7, and 3 gets 6
         self.totalCompScore = 0
         
         
@@ -100,6 +120,7 @@ class BagelsGame:
         self.picosList[:] = []
         self.fermis.clear()
         self.availableDigits = "0123456789"
+        self.compTurnCount = 9 - self.level
     
     def getHiddenNum(self):
         """
@@ -300,7 +321,24 @@ class BagelsGame:
                 openIndices.remove(pickedIndex)             # remove the index remaining unchanged
                 nextGuess[pickedIndex] = self.currentGuess[pickedIndex]
 
+        for i in range (len(openIndices)):
+            guessedDigit = "x"
+            while nextGuess[openIndices[i]] == "x":
+                guessedDigit = random.choice(self.availableDigits)
+                repeated = False                
+                for x in range(len(nextGuess)): # x not i becuase we have multiple for loops
+                    if nextGuess[x] == guessedDigit:    # checks for repeats
+                        repeated = True
+                if repeated == False:
+                    nextGuess[openIndices[i]] = guessedDigit
+     
+        while nextGuess[0] == "0":
+            nextGuess[0] = random.choice(self.availableDigits)
+            
+        return "".join(nextGuess)
+    
         
+        """ COULDN'T GET A FUNCTIONAL PICO ALGORITHM
         tempPicosList = self.picosList  # then address picos, tempList so we can modify locally
         for i in range (len(openIndices)):   # use the remaining indices of nextGuess
 
@@ -313,10 +351,9 @@ class BagelsGame:
                     guessedDigit = random.choice(self.availableDigits)
             
                 nextGuess[openIndices[i]] = guessedDigit
-        
+        """
 
-        return "".join(nextGuess)
-    
+
     def compTurn(self):
         """
         The AI takes a turn, guessing and number
@@ -326,24 +363,28 @@ class BagelsGame:
         self.playerSetNum()
         while self.currentGuess != self.hiddenNum and self.points >= 1: # repeat guessing
             print("Your opponent has " + str(self.points) + " points left.")
+            
             if self.currentGuess == "":
                 self.currentGuess = self.randGuess()
-            
+            elif self.compTurnCount <= 0:
+                self.currentGuess = self.hiddenNum
             else:
                 self.currentGuess = self.compGuess()
             
             print("Your opponent guesses " + self.currentGuess)
-        
+    
             if self.currentGuess == self.hiddenNum:
                 print ("Your opponent guessed correctly.")
-                self.totalPlayerScore += self.points
-
-            elif self.points <= 0:
+                self.totalCompScore += self.points
+                print ("Opponent Total Score: " + str(self.totalCompScore))
+            
+            elif self.points <= 0:  # currently AI will not fail
                 print("Your opponent has failed.")
                 # self.continueOrQuit() # prompts to replay or quit
-        
+           
             else:
                 self.points -= 1
+                self.compTurnCount -= 1
                 self.playerResponse()    
             
     
@@ -355,6 +396,7 @@ class BagelsGame:
         
     
 def main():
+    rules()    
     gameOne = BagelsGame(1)
     #gameOne.randSetNum()
     #gameOne.playerSetNum()

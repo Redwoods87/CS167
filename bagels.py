@@ -15,63 +15,111 @@ OF POLITICAL POWER
 
 This program runs the game "Bagels Revolution."
 
+
+TO DO: 
+Write continueOrQuit()
+write confirmResponse()
+write narratives()
+add print hiddenNum if successful for confirmation - DONE
+remove print tests from pico responses - DONE
+print total score between turns - DONE
+how to pass total scores between rounds -DONE
 """
 
 import random
 import sys
 
-def intro():
+
+class Narrative:
     """
-    Prints intro to game, prompts to choose side
+    A class that provides the narrative content of a game of Bagels Revolution.
     """
-    print("Welcome to Bagels the Game! \n")
     
-def rules():
-    """
-    Prints rules
-    """
-    print("How to play Bagels (couresy of armoredpenguin.com): \n \
-1. There are two opponents. One picks a number, and the other one \
-attempts to guess the number. The person picking the number must \
-give accurate answers to the guesses. \n\n \
-2. The person picking a number picks a three digit number. In this \
-version, there may be no leading zeros, and digits may not be repeated.\n\n \
-3. The person guessing the number gives three digit numbers. \n\n \
-4. The person who picked the number answers: \n\n \
-- Fermi : One of the digits in the guess matches one of the digits in the \
-answer, and it is in the right position. \n\n \
-- Pico : One of the digits in the guess matches one of the digits in the answer, \
-and it is in the right position. \n\n \
-- Bagels : None of the digits in the guess match any of the digits in the answer. \n\n \
-Multiple answers may come out of a single guess. For example, the person answering \
-might say, 'Pico Pico,' 'Pico Pico Pico,' or 'Fermi Fermi Pico,' in no particular \
-order. \n\n \
-
-
-
-")
+    def __init__(self, storyline):
+        """
+        Initializes a Narrative object
+        Parameters:
+            storyline: a single integer (1 or 2) determines object storyline;
+                [1] : A Billionaire Mucky-Muck
+                [2] : A Swarm of Angry Protestors
+        Returns None
+        """
+        self.storyline = storyline
         
+    def openingText(self):
+        """
+        Prints the opening to the chosen storyline
+        """
+        if self.storyline == 1: # billionaire
+            print("")
+            
+        elif self.storyline == 2: # protestors
+            print("")
+            
+    
+    def firstWin(self):
+        """
+        Prints the transition text after winning level 1       
+        """
+        if self.storyline == 1: # billionaire
+            print("")
+            
+        elif self.storyline == 2: # protestors
+            print("")        
+        
+    def firstLoss(self):
+        """
+        Prints the transition text after losing level 1      
+        """        
+        if self.storyline == 1: # billionaire
+            print("")
+            
+        elif self.storyline == 2: # protestors
+            print("")
+       
+       
+    def secondWin(self):
+        """
+        Prints the transition text after winning level 2       
+        """
+        if self.storyline == 1: # billionaire
+            print("")
+            
+        elif self.storyline == 2: # protestors
+            print("")
+        
+    def secondLoss(self):
+        """
+        Prints the transition text after losing level 2  
+        """
+        if self.storyline == 1: # billionaire
+            print("")
+            
+        elif self.storyline == 2: # protestors
+            print("")
 
-#def help():    #BUILT INTO checkOptions() and rules()
- #   """
-#    Prints rules and options to exit or continue
-   # """
-    #pass
 
-def checkOptions(inputText):
-    """
-    Checks to see if player has inputed help or quit
-    Parameter:
-        inputText: a string to check
-    """
-    if inputText.lower() == "quit" or inputText.lower() == "exit":
-        quitResponse = input("Are you sure you want to quit? Enter Yes or No: ")
-        if quitResponse.lower() == "yes":
-            sys.exit("Thanks for playing.")
-    if inputText.lower() == "help":
-        helpResponse = input("Would you like to see the rules again? Enter Yes or No: ")
-        if helpResponse.lower() == "yes":
-            rules()
+    def thirdWin(self):
+        """
+        Prints the final text after winning level 3       
+        """
+        if self.storyline == 1: # billionaire
+            print("")
+            
+        elif self.storyline == 2: # protestors
+            print("")
+        
+    def thirdLoss(self):
+        """
+        Prints the final text after losing level 3   
+        """
+        if self.storyline == 1: # billionaire
+            print("")
+            
+        elif self.storyline == 2: # protestors
+            print("")
+
+
 
 class BagelsGame:
     """
@@ -81,13 +129,15 @@ class BagelsGame:
     difficulty (1, 2, or 3)
     """
     
-    def __init__(self, level):
+    def __init__(self, level, startingScores):
         """
         Constructor that creates a level of the game
         Parameter:
-            level: a string ("1", "2", or "3")that determines 
-            the difficulty of the game
-        Returns none
+            level:  a string ("1", "2", or "3")that determines 
+                    the difficulty of the game
+            startingScores: takes a tuple with 2 items as integers
+                            (playerScore, compScore)        
+        Returns None
         """
         self.level = level
         self.hiddenNum = ""
@@ -101,15 +151,22 @@ class BagelsGame:
                          # value: number of fermis in guess  
         self.availableDigits = "0123456789" # string digits not eliminated by "bagels"
         self.compTurnCount = 9 - level # turns until comp guesses correctly
-        self.totalPlayerScore = 0          # level 1 gets 8 turns, 2 gets 7, and 3 gets 6
-        self.totalCompScore = 0
         
+        self.totalPlayerScore = startingScores[0] #1st tuple value  # level 1 gets 8 turns, 2 gets 7, and 3 gets 6
+        self.totalCompScore = startingScores[1] #2nd tuple value
         
+    def getTotalScores(self):
+        """
+        Accesses the total scores of both the player and the computer
+        Returns a tuple (totalPlayerScore, totalCompScore), each an integer
+        """
+        return (self.totalPlayerScore, self.totalCompScore)
+    
     def remindScore(self):
         """
         Prints reminder of the current score.
         """
-        print("You have " + str(self.points) + " points. Don't guess wrong or lose 1 point.") 
+        print("\nYou have " + str(self.points) + " points. Don't guess wrong or lose 1 point.") 
         # Currently just for player, not comp    
         
     def refreshVariables(self):
@@ -151,6 +208,7 @@ class BagelsGame:
         finished = False    
         while finished == False:    #Repeats if input invalid
             inputString = input("Pick a 3-digit number for your opponent to guess: ") # text generated from Story class?
+            checkOptions(inputString)            
             if self.validInput(inputString) == True:
                 self.hiddenNum = inputString
                 finished = True
@@ -177,18 +235,19 @@ class BagelsGame:
         wrongDigits = 0 # if 3 wrong digits, say Bagels!
         for i in range (len(self.currentGuess)):    # iterates over 3 digits in guess
             if self.currentGuess[i] in self.hiddenNum and self.currentGuess[i] != self.hiddenNum[i]: # pico
-                response.append("pico ")
+                response.append("Pico ")
                 for i in range(len(self.currentGuess)):
-                    if self.currentGuess[i] not in self.picoDigits:
-                        self.picoDigits.append(self.currentGuess[i])
+                    if self.currentGuess[i] not in self.picosList:
+                        self.picosList.append(self.currentGuess[i])
 
-            if self.currentGuess[i] == self.hiddenNum[i]:   # fermi
-                response.append("fermi ")
+            elif self.currentGuess[i] == self.hiddenNum[i]:   # fermi
+                response.append("Fermi ")
                 if self.currentGuess in self.fermis:
                     self.fermis[self.currentGuess] += 1
                 else:
                     self.fermis[self.currentGuess] = 1
-            if self.currentGuess[i] not in self.hiddenNum:
+            
+            elif self.currentGuess[i] not in self.hiddenNum:
                 wrongDigits += 1
         
         if wrongDigits >= 3:
@@ -196,7 +255,7 @@ class BagelsGame:
             for i in range (len(self.currentGuess)):
                 if self.currentGuess[i] in self.availableDigits:
                     self.availableDigits.replace(self.currentGuess[i], "")
-            self.avi += self.currentGuess         
+            #self.avi += self.currentGuess         
         
         random.shuffle(response)    # randomizes order of responses
         lineToPrint = ""            
@@ -210,7 +269,8 @@ class BagelsGame:
         """
         self.refreshVariables()
         self.randSetNum()
-        print("Your opponent has chosen a number.")
+        print("\nNow it's your turn.\n\nYour opponent has chosen a secret number.")
+ 
         while self.currentGuess != self.hiddenNum and self.points >= 1: # repeat guessing
             self.remindScore()
             
@@ -221,17 +281,21 @@ class BagelsGame:
                 if self.validInput(self.currentGuess) == True:
                     valid = True
                 else:
-                    print("Invalid guess. Enter 3 distinct digits.")
+                    print("\nInvalid guess. Enter 3 distinct digits.\n")
             
             self.getResponse()
             if self.currentGuess != self.hiddenNum: # -1 point and repeat unless correct
                 self.points -= 1
         
         if self.currentGuess == self.hiddenNum:
-            print ("You got it! Relish your victory.")
+            print ("\nYou got it! The hidden number was: " + self.hiddenNum + ". Relish your victory.\n")
+            print (str(self.points) + " points have been added to your total score")
+            print ("Your total score: " + str(self.totalPlayerScore))
             self.totalPlayerScore += self.points
+        
         if self.points <= 0:
-            print("You have been defeated.")
+            print("\nYou have been defeated. The secret number was " + self.hiddenNum + ".")
+            print ("Your total score: " + str(self.totalPlayerScore) + "\n")
             # self.continueOrQuit() # prompts to replay or quit
     
     def randGuess(self):
@@ -255,11 +319,13 @@ class BagelsGame:
         print("How do you respond? ie. pico's, fermi's, bagels")
         response = input("Your response: ")
         response.lower()
+        checkOptions(response)        
         responseList = response.split() # split into list to find responses
         
         while "pico" not in responseList and "fermi" not in responseList and "bagels" not in responseList:      # if reponse incorrect, try again
             response = input("Invalid response. Please try again: ")
             response.lower()
+            checkOptions(response)
             responseList = response.split()
             
         while len(responseList) >= 1:   # if no more responses found, len set to 0
@@ -297,11 +363,12 @@ class BagelsGame:
                 del responseList[:] # list len set to 0
                 
         print("You say: " + confirmResponse)
+
         
-    def checkResponse(self):
+    def confirmResponse(self):
         """
         Checks to see if a players reponse - pico's, fermi's, bagel's -
-        are valid or if the player is cheating
+        is valid or if the player is cheating
         """
         pass
     
@@ -362,7 +429,7 @@ class BagelsGame:
         self.refreshVariables()
         self.playerSetNum()
         while self.currentGuess != self.hiddenNum and self.points >= 1: # repeat guessing
-            print("Your opponent has " + str(self.points) + " points left.")
+            print("\nIt's your opponent's turn.\n\nYour opponent has " + str(self.points) + " points left.\n")
             
             if self.currentGuess == "":
                 self.currentGuess = self.randGuess()
@@ -371,15 +438,16 @@ class BagelsGame:
             else:
                 self.currentGuess = self.compGuess()
             
-            print("Your opponent guesses " + self.currentGuess)
+            print("Your opponent guesses " + self.currentGuess + "\n")
     
             if self.currentGuess == self.hiddenNum:
                 print ("Your opponent guessed correctly.")
+                print ("\n" + str(self.points) + " points have been added to their total score.")
+                print ("Opponent's total score: " + str(self.totalCompScore))
                 self.totalCompScore += self.points
-                print ("Opponent Total Score: " + str(self.totalCompScore))
             
             elif self.points <= 0:  # currently AI will not fail
-                print("Your opponent has failed.")
+                print("Your opponent has failed.\n")
                 # self.continueOrQuit() # prompts to replay or quit
            
             else:
@@ -393,15 +461,132 @@ class BagelsGame:
         Prompts player to continue playing, replay, or quit
         """
         pass
+    
+    
+def rules():
+    """
+    Prints rules
+    """
+    print("\n\nHOW TO PLAY BAGELS (modified from armoredpenguin.com): \n\n \
+1. There are two opponents, the player and the computer. One picks a number, and the other \
+tries to guess the number. The opponent picking the number must \
+give accurate responses to the guesses. \n\n \
+2. The opponent picking a number chooses a three digit number. (In this \
+version, there may be no leading zeros, and digits may not be repeated.)\n\n \
+3. The opponent guessing the number gives a three digit number. \n\n \
+4. The opponent who picked the number answers: \n\n \
+- Fermi : One of the digits in the guess matches one of the digits in the \
+answer, and it is in the correct position. \n\n \
+- Pico : One of the digits in the guess matches one of the digits in the answer, \
+but the digit is not in the correct place. \n\n \
+- Bagels : None of the digits in the guess match any of the digits in the answer. \n\n \
+Multiple answers may come out of a single guess. For example, the person answering \
+might say, 'Pico Pico,' 'Pico Pico Pico,' or 'Fermi Fermi Pico,' in no particular \
+order. \n\n \
+5. Opponents take turns holding each role. The opponent guessing has up to \
+10 guesses before they lose and can win up to 10 points depending on how \
+many guesses before they guess correctly. If their first guess is correct, they \
+receive 10 points added to their total score. They will receive 1 less point for \
+each turn it takes them until they answer correctly. \n\n")
         
+
+#def help():    #BUILT INTO checkOptions() and rules()
+ #   """
+#    Prints rules and options to exit or continue
+   # """
+    #pass
+
+def checkOptions(inputText):
+    """
+    Checks to see if player has inputed help or quit
+    Parameter:
+        inputText: a string to check
+    """
+    if inputText.lower() == "quit" or inputText.lower() == "exit":
+        quitResponse = input("Are you sure you want to quit? Enter Yes or No: ")
+        if quitResponse.lower() == "yes":
+            sys.exit("Thanks for playing.")
+    if inputText.lower() == "help":
+        helpResponse = input("Would you like to see the rules again? Enter Yes or No: ")
+        if helpResponse.lower() == "yes":
+            rules()    
+    
+def intro():
+    """
+    Prints intro to game, prompts to choose side
+    Returns: an integer (1 or 2) determining while storyline to use
+    """
+    print("\n\nBAGELS REVOLUTION \n\nTHE NUMBER-GUESSING GAME\nOF POLITICAL POWER \n")
+    rules()
+    play = input("Would you like to play? : ")
+    if play.lower() == "no" or play.lower() == "n":
+        sys.exit("\nGoodbye for now.")
+    else:
+        print("\nGreat, let's get started.")
+        
+    charChoice = 0
+
+    while charChoice != "1" and charChoice != "2":    
+        charChoice = input("\nPlease choose a character to play: \n\n\
+Enter [1] for 'A Billionaire Mucky-Muck' \
+\n                 or \nEnter [2] for 'A Swarm of Angry Protestors' \n\nChoice: ")
+        checkOptions(charChoice)
+    
+    return charChoice
+
+    #story = Narrative(int(charChoice))    
+    
+
+def playRound(gameRound, story):
+    """
+    Plays a round of bagels, player and computer each get a turn, player first
+    Parameters:
+        bagelsGame: an object of the BagelsGame class
+        story: an object of the Narrative class
+    Returns True if player wins and False if player loses
+    """   
+    gameRound.playerTurn()
+    gameRound.compTurn()
+    scores = gameRound.getTotalScores() # scores is a tuple (player scores, comp scores)
+    print ("\nFinal points from round: \nYou got " + str(scores[0]) + " points.\n\
+Your opponent got " + str(scores[1]) + " points.\n)     
+    if scores[0] > scores[1]:
+        print ("You won the round!")        
+        return True
+    elif scores[0] < scores[1]:
+        print ("You lost the round.")        
+        return False
+    else:
+        print("You tie, but that's not good enough. You lose.")
+        return False
     
 def main():
-    rules()    
-    gameOne = BagelsGame(1)
-    #gameOne.randSetNum()
-    #gameOne.playerSetNum()
-    #gameOne.playerTurn()
-    gameOne.compTurn()
+    storyChoice = intro() # intro() returns 1 or 2, determines storyline
+    story = Narrative(storyChoice)
+    story.openingText()    
+    
+    roundOne = BagelsGame(1, (0,0)) # starting scores start at 0   
+    firstOutcome = playRound(roundOne, story)
+    if firstOutcome == True:
+        roundTwo = BagelsGame(2, roundOne.getTotalScores())
+        secondOutcome = playRound(roundTwo, story)
+        if secondOutcome == True:
+            roundThree = BagelsGame(3, roundTwo.getTotalScores())
+            thirdOutcome = playRound(roundThree, story)
+            if thirdOutcome == True:
+                story.thirdWin()
+            else:
+                story.thirdLoss()
+        else:
+            story.secondLoss()
+    else:
+        story.firstLoss()
+     
+     
+    #roundOne.randSetNum()
+    #roundOne.playerSetNum()
+    #roundOne.playerTurn()
+    #roundOne.compTurn()
     
 if __name__ == "__main__":
     main()

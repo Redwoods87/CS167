@@ -24,6 +24,8 @@ add print hiddenNum if successful for confirmation - DONE
 remove print tests from pico responses - DONE
 print total score between turns - DONE
 how to pass total scores between rounds -DONE
+write credits? (include Emma Lazarus, "The New Colossus" referenced in protestors story)
+WRITE SECRET BACKDOOR TO GET HIDDENNUM
 """
 
 import random
@@ -51,10 +53,18 @@ class Narrative:
         Prints the opening to the chosen storyline
         """
         if self.storyline == 1: # billionaire
-            print("")
+            print("\nYou are $$$ Billionaire Damien Fascistman $$$. You have mountains of money \
+from exploiting other countries and manipulating the fossil fuel industry.\n\n\
+But money is not enough. You crave power. You set off on your quest for global domination.\n\n\
+Your first opponent is the MASS MEDIA.  Round One: Fight!\n\n\
+---------------------------")
             
         elif self.storyline == 2: # protestors
-            print("")
+            print("\nYou are: !!!The Tired, The Poor, The Huddled Masses!!! Zounds of you \
+fill the street across the country. Frustrated with the polical system and the rich \
+bastards that run the country, you begin to organize yourselves. \n\n\
+Your first opponent is the MASS MEDIA.  Round One: Fight!\n\n\
+---------------------------")
             
     
     def firstWin(self):
@@ -62,7 +72,11 @@ class Narrative:
         Prints the transition text after winning level 1       
         """
         if self.storyline == 1: # billionaire
-            print("")
+            print("\nYour expertise in cat videos and skill in trolling the internet\
+allows you to get more views on MySpace than anyone in years. The mainstream media\
+cannot keep up with your onslaught of tweeters is unstoppable. You are the master twit!\n\n\
+With communications under your control, you face your next opponent:\n\n\
+A MORASS OF ENTRENCHED POLITICIANS -- Round Two: Fight!\n\n")
             
         elif self.storyline == 2: # protestors
             print("")        
@@ -72,7 +86,8 @@ class Narrative:
         Prints the transition text after losing level 1      
         """        
         if self.storyline == 1: # billionaire
-            print("")
+            print("The Mass Media drowns out your elitist jabberings. Everyone blocks \
+you on Facebook and you retreat into the tunnels and caves under you mountain of gold.")
             
         elif self.storyline == 2: # protestors
             print("")
@@ -162,6 +177,12 @@ class BagelsGame:
         """
         return (self.totalPlayerScore, self.totalCompScore)
     
+    def getHiddenNum(self):
+        """
+        Returns hidden number as a three digit string
+        """
+        return self.hiddenNum    
+    
     def remindScore(self):
         """
         Prints reminder of the current score.
@@ -178,12 +199,15 @@ class BagelsGame:
         self.fermis.clear()
         self.availableDigits = "0123456789"
         self.compTurnCount = 9 - self.level
-    
-    def getHiddenNum(self):
+        
+    def setTotalScores(self, scoresTuple):
         """
-        Returns hidden number as a three digit string
+        Resets the total scores for an already created game object
+        Parameter:
+            scoresTuple: a tuple of two integers denoting the scores (playerScore, compScore)
         """
-        return self.hiddenNum
+        self.totalPlayersScore = scoresTuple[0]
+        self.totalCompScore = scoresTuple[1]
     
     def validInput(self, text):
         """
@@ -269,7 +293,7 @@ class BagelsGame:
         """
         self.refreshVariables()
         self.randSetNum()
-        print("\nNow it's your turn.\n\nYour opponent has chosen a secret number.")
+        print("\nIt's your turn.\n\nYour opponent has chosen a secret number.")
  
         while self.currentGuess != self.hiddenNum and self.points >= 1: # repeat guessing
             self.remindScore()
@@ -376,7 +400,7 @@ class BagelsGame:
         """
         AI uses variables to make an educated guess
         Returns guess as a 3-character string
-        BUG: COMP IS GENERATING 0's AS FIRST DIGIT
+        FIXED BUG: COMP WAS GENERATING 0's AS FIRST DIGIT
         """
         nextGuess = ["x", "x", "x"]     # will be used to generate next guess
         openIndices = [0, 1, 2]
@@ -454,14 +478,11 @@ class BagelsGame:
                 self.points -= 1
                 self.compTurnCount -= 1
                 self.playerResponse()    
-            
-    
-    def continueOrQuit(self):
+        
+    def __del__(self):
         """
-        Prompts player to continue playing, replay, or quit
+        Destorys the game object
         """
-        pass
-    
     
 def rules():
     """
@@ -532,10 +553,8 @@ Enter [1] for 'A Billionaire Mucky-Muck' \
 \n                 or \nEnter [2] for 'A Swarm of Angry Protestors' \n\nChoice: ")
         checkOptions(charChoice)
     
-    return charChoice
+    return int(charChoice)
 
-    #story = Narrative(int(charChoice))    
-    
 
 def playRound(gameRound, story):
     """
@@ -549,7 +568,7 @@ def playRound(gameRound, story):
     gameRound.compTurn()
     scores = gameRound.getTotalScores() # scores is a tuple (player scores, comp scores)
     print ("\nFinal points from round: \nYou got " + str(scores[0]) + " points.\n\
-Your opponent got " + str(scores[1]) + " points.\n)     
+Your opponent got " + str(scores[1]) + " points.\n")     
     if scores[0] > scores[1]:
         print ("You won the round!")        
         return True
@@ -559,6 +578,20 @@ Your opponent got " + str(scores[1]) + " points.\n)
     else:
         print("You tie, but that's not good enough. You lose.")
         return False
+        
+    """
+def continueOrQuit(currentRound, previousScore):
+    
+    Prompts player to continue playing, replay, or quit
+    Parameters: 
+        currentRound: a BagelsGame object to be played
+        previousScore: a tuple of two integers (playersScore, CompScore)
+    
+    print("Unfortunately your rise to power has been quashed.\n\n")
+    continueOrExit = input("Would you like to try this level again? (Yes or No) : ")
+    if continueOrExit.lower() == "yes" or continueOrExit.lower() == "y":
+        currentRound.setTotalScores() # PROBLEM RESETTING SCORES, LEAVE FOR NOW
+    """
     
 def main():
     storyChoice = intro() # intro() returns 1 or 2, determines storyline
@@ -581,12 +614,7 @@ def main():
             story.secondLoss()
     else:
         story.firstLoss()
-     
-     
-    #roundOne.randSetNum()
-    #roundOne.playerSetNum()
-    #roundOne.playerTurn()
-    #roundOne.compTurn()
+
     
 if __name__ == "__main__":
     main()

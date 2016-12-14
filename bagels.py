@@ -53,7 +53,7 @@ class Narrative:
         Prints the opening to the chosen storyline
         """
         if self.storyline == 1: # billionaire
-            print("\nYou are $$$ Billionaire Damien Fascistman $$$. You have mountains of money \
+            print("\nYou are $$$ Billionaire Damien Truman $$$. You have mountains of money \
 from exploiting other countries and manipulating the fossil fuel industry.\n\n\
 But money is not enough. You crave power. You set off on your quest for global domination.\n\n\
 Your first opponent is the MASS MEDIA.  Round One: Fight!\n\n\

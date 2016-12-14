@@ -25,7 +25,7 @@ remove print tests from pico responses - DONE
 print total score between turns - DONE
 how to pass total scores between rounds -DONE
 write credits? (include Emma Lazarus, "The New Colossus" referenced in protestors story)
-WRITE SECRET BACKDOOR TO GET HIDDENNUM
+WRITE SECRET BACKDOOR TO GET HIDDENNUM - DONE: secret code: "hidden"
 """
 
 import random
@@ -72,14 +72,20 @@ Your first opponent is the MASS MEDIA.  Round One: Fight!\n\n\
         Prints the transition text after winning level 1       
         """
         if self.storyline == 1: # billionaire
-            print("\nYour expertise in cat videos and skill in trolling the internet\
-allows you to get more views on MySpace than anyone in years. The mainstream media\
-cannot keep up with your onslaught of tweeters is unstoppable. You are the master twit!\n\n\
+            print("\nYour expertise in cat videos and trolling the Internet \
+allows you to get more views on MySpace than anyone in years. The mainstream media \
+cannot keep up with your onslaught of tweets. You are the master twit!\n\n\
 With communications under your control, you face your next opponent:\n\n\
-A MORASS OF ENTRENCHED POLITICIANS -- Round Two: Fight!\n\n")
+A MORASS OF ENTRENCHED POLITICIANS -- Round Two: Fight!\n\n\
+---------------------------")
             
         elif self.storyline == 2: # protestors
-            print("")        
+            print("Organizing yourselves in committees, you create a network of \
+alterive media outlets. Seeing their ratings dropping quickly, mainstream media \
+corporations are forced to acknowledge you or face economic turmoil.\n\n\
+Now that your message is out there, you face your next opponent:\n\n\
+A GLUTTONOUS POLITICAL MACHINE -- Round Two: Fight!\n\n\
+---------------------------")        
         
     def firstLoss(self):
         """
@@ -87,10 +93,12 @@ A MORASS OF ENTRENCHED POLITICIANS -- Round Two: Fight!\n\n")
         """        
         if self.storyline == 1: # billionaire
             print("The Mass Media drowns out your elitist jabberings. Everyone blocks \
-you on Facebook and you retreat into the tunnels and caves under you mountain of gold.")
+you on Facebook and you retreat into the tunnels and caves under your mountain of gold.")
             
         elif self.storyline == 2: # protestors
-            print("")
+            print("Despite drawing crowds of more than 20,000 to your rallies, the media \
+elite lead each news cycle with cat memes. You can't compete. Your noble message \
+is drowned out. You lose.")
        
        
     def secondWin(self):
@@ -98,20 +106,34 @@ you on Facebook and you retreat into the tunnels and caves under you mountain of
         Prints the transition text after winning level 2       
         """
         if self.storyline == 1: # billionaire
-            print("")
+            print("You blackmail, berate, and bribe every influential politician you can find. \
+After a few short months, those who had denounced you now praise your wisdom. \
+With their support, you quickly rig a major election and become leader of the 'free' world.\n\n\
+Now the head of state, you face your final opponent: \n\n\
+FOREIGN EVIL DICTATOR MANIACAL MARTIN -- Round Three, Fight!\n\n\
+---------------------------")
             
         elif self.storyline == 2: # protestors
-            print("")
+            print("After planning for 2 years, you run 400+ candidates \
+in a momentous election and win landslide victories across the country. You now \
+have a political voice!\n\n\
+In an attempt to establish economic balance, you face your final opponent: \n\n\
+FOSSIL FUEL TYCOON BENJAMIN MONEYBAGS -- Round Three, Fight!\n\n\
+--------------------------- ")
         
     def secondLoss(self):
         """
         Prints the transition text after losing level 2  
         """
         if self.storyline == 1: # billionaire
-            print("")
+            print("Listening to politicians all day confuses you. You lose interest \
+in global domination and decide to go play golf in Flordia where you accidentally \
+fall into a small pond and are eaten alive by crocodiles who didn't vote for you.")
             
         elif self.storyline == 2: # protestors
-            print("")
+            print("Despite massive media coverage, the political machine suppresses \
+the vote by re-districting voting districts across the country. None of your \
+candidates will their elections and you all go back to working at Dairy Queen.")
 
 
     def thirdWin(self):
@@ -119,20 +141,38 @@ you on Facebook and you retreat into the tunnels and caves under you mountain of
         Prints the final text after winning level 3       
         """
         if self.storyline == 1: # billionaire
-            print("")
+            print("You invite Maniacal Martin, your dictatorial counterpart from \
+over yonder, to play poker at your summer home. While he's visiting, you bribe his Generals \
+into staging a coup. You also beat him at Texas Hold 'Em and take his favorite watch.\n\n\
+You have won the game! You are a ruthless oligarch reigning over the economically-enslaved \
+masses. You enjoy a lonely, hateful life with no friends and all the premium steak you can \
+eat. 'Good Job, self,' you say in the mirror. If you had any friends, they wouldn't be as \
+cool as you.")
             
         elif self.storyline == 2: # protestors
-            print("")
+            print("You pass legislation that regulates the fossil fuel industry, \
+raises taxes on the wealthy, and makes public higher education free. \
+Fossil Fuel Tycoon Benjamin Moneybags is forced to play Scrooge in the local \
+high school musical version of Charles Dickens' 'A Christmas Carol.' He recognizes \
+his passed indiscretions and donates all his money to high school drama departments \
+across the country. You have won the game!")
         
     def thirdLoss(self):
         """
         Prints the final text after losing level 3   
         """
         if self.storyline == 1: # billionaire
-            print("")
+            print("Evil Dictator Maniacal Martin gets you drunk at your nephew's \
+birthday party and talks you into betting on who will win American Idol. You drunkenly \
+accept, not knowing that Maniacal Martin has rigged the show! You lose the bet \
+and are forced to hand over your brand new country. You retire into exile and waste \
+away watching reality T.V. for the rest of your days. ")
             
         elif self.storyline == 2: # protestors
-            print("")
+            print("Fossil Fuel Tycoon Benjamin Moneybags bribes all 5,000 of your \
+paid employees and all of the politicians you elected into office. He even bribes you! \
+The movement falls apart. You wipe a tear away from your eye as you drive madly \
+down the highway in your new Mercedes-Benz. You lose.")
 
 
 
@@ -165,9 +205,9 @@ class BagelsGame:
         self.fermis = {} # key: 3-digit guess,
                          # value: number of fermis in guess  
         self.availableDigits = "0123456789" # string digits not eliminated by "bagels"
-        self.compTurnCount = 9 - level # turns until comp guesses correctly
+        self.compTurnCount = 10 - level # turns until comp guesses correctly
         
-        self.totalPlayerScore = startingScores[0] #1st tuple value  # level 1 gets 8 turns, 2 gets 7, and 3 gets 6
+        self.totalPlayerScore = startingScores[0] #1st tuple value  # level 1 gets 9 turns, 2 gets 8, and 3 gets 7
         self.totalCompScore = startingScores[1] #2nd tuple value
         
     def getTotalScores(self):
@@ -293,7 +333,7 @@ class BagelsGame:
         """
         self.refreshVariables()
         self.randSetNum()
-        print("\nIt's your turn.\n\nYour opponent has chosen a secret number.")
+        print("\nIt's your turn.\n\nYour opponent has chosen a SECRET NUMBER.")
  
         while self.currentGuess != self.hiddenNum and self.points >= 1: # repeat guessing
             self.remindScore()
@@ -302,6 +342,8 @@ class BagelsGame:
             while valid == False:
                 self.currentGuess = input("Your guess: ")  # updates self.currentGuess using text input
                 checkOptions(self.currentGuess) # BUG: PRINTS INVALID IF OPTIONS ARE USED
+                if self.currentGuess.lower() == "hidden": # SECRET CODE TO GET ANSWER
+                    print ("SECRET UNLOCKED! Hidden Number: " + self.getHiddenNum())                
                 if self.validInput(self.currentGuess) == True:
                     valid = True
                 else:
@@ -314,8 +356,8 @@ class BagelsGame:
         if self.currentGuess == self.hiddenNum:
             print ("\nYou got it! The hidden number was: " + self.hiddenNum + ". Relish your victory.\n")
             print (str(self.points) + " points have been added to your total score")
-            print ("Your total score: " + str(self.totalPlayerScore))
             self.totalPlayerScore += self.points
+            print ("Your total score: " + str(self.totalPlayerScore))
         
         if self.points <= 0:
             print("\nYou have been defeated. The secret number was " + self.hiddenNum + ".")
@@ -451,9 +493,10 @@ class BagelsGame:
         and the player responses
         """
         self.refreshVariables()
+        print ("\n\nIt's your opponent's turn.\n\n")
         self.playerSetNum()
         while self.currentGuess != self.hiddenNum and self.points >= 1: # repeat guessing
-            print("\nIt's your opponent's turn.\n\nYour opponent has " + str(self.points) + " points left.\n")
+            print("\nYour opponent has " + str(self.points) + " points left.\n")
             
             if self.currentGuess == "":
                 self.currentGuess = self.randGuess()
@@ -467,8 +510,9 @@ class BagelsGame:
             if self.currentGuess == self.hiddenNum:
                 print ("Your opponent guessed correctly.")
                 print ("\n" + str(self.points) + " points have been added to their total score.")
-                print ("Opponent's total score: " + str(self.totalCompScore))
                 self.totalCompScore += self.points
+                print ("Opponent's total score: " + str(self.totalCompScore))
+                
             
             elif self.points <= 0:  # currently AI will not fail
                 print("Your opponent has failed.\n")
@@ -508,7 +552,8 @@ order. \n\n \
 10 guesses before they lose and can win up to 10 points depending on how \
 many guesses before they guess correctly. If their first guess is correct, they \
 receive 10 points added to their total score. They will receive 1 less point for \
-each turn it takes them until they answer correctly. \n\n")
+each turn it takes them until they answer correctly, and 0 points if they run out \
+of guesses. \n\n")
         
 
 #def help():    #BUILT INTO checkOptions() and rules()
@@ -601,6 +646,7 @@ def main():
     roundOne = BagelsGame(1, (0,0)) # starting scores start at 0   
     firstOutcome = playRound(roundOne, story)
     if firstOutcome == True:
+        story.firstWin()        
         roundTwo = BagelsGame(2, roundOne.getTotalScores())
         secondOutcome = playRound(roundTwo, story)
         if secondOutcome == True:

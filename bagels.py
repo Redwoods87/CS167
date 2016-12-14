@@ -19,7 +19,7 @@ This program runs the game "Bagels Revolution."
 TO DO: 
 Write continueOrQuit()
 write confirmResponse()
-write narratives()
+write narratives() - DONE
 add print hiddenNum if successful for confirmation - DONE
 remove print tests from pico responses - DONE
 print total score between turns - DONE
@@ -575,7 +575,8 @@ def checkOptions(inputText):
     if inputText.lower() == "help":
         helpResponse = input("Would you like to see the rules again? Enter Yes or No: ")
         if helpResponse.lower() == "yes":
-            rules()    
+            rules()
+
     
 def intro():
     """
